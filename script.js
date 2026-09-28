@@ -92,69 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. Interactive ROI & Revenue Loss Calculator (INR)
-  const adSpendInput = document.getElementById('ad-spend-range');
-  const spendValDisplay = document.getElementById('spend-val-display');
-  const savedRevenueDisplay = document.getElementById('saved-revenue');
-  const downtimeDaysDisplay = document.getElementById('downtime-days');
-  const summarySavedVal = document.getElementById('summary-saved-val');
-  const presetButtons = document.querySelectorAll('.preset-pill');
-
-  if (adSpendInput && spendValDisplay) {
-    const formatINR = (val) => '₹' + Math.round(val).toLocaleString('en-IN');
-
-    const updateSliderFill = (spend, min, max) => {
-      const percentage = Math.min(Math.max(((spend - min) / (max - min)) * 100, 0), 100);
-      adSpendInput.style.background = `linear-gradient(to right, #10B981 ${percentage}%, #E5E7EB ${percentage}%)`;
-    };
-
-    const calculateROI = () => {
-      const spend = parseInt(adSpendInput.value, 10);
-      const min = parseInt(adSpendInput.min, 10) || 25000;
-      const max = parseInt(adSpendInput.max, 10) || 1000000;
-
-      // Update Slider Visual Track Fill
-      updateSliderFill(spend, min, max);
-
-      // Format spend in INR
-      spendValDisplay.textContent = formatINR(spend);
-
-      // Calculations:
-      // When accounts are banned, an average of 10 days of downtime costs ~36% of monthly potential ad revenue
-      const estimatedLoss = Math.round(spend * 0.36);
-      const downtimeDays = 10;
-
-      if (savedRevenueDisplay) savedRevenueDisplay.textContent = formatINR(estimatedLoss);
-      if (downtimeDaysDisplay) downtimeDaysDisplay.textContent = downtimeDays + ' Days';
-      if (summarySavedVal) summarySavedVal.textContent = formatINR(estimatedLoss);
-
-      // Update preset pills active state
-      presetButtons.forEach(btn => {
-        const btnVal = parseInt(btn.getAttribute('data-amount'), 10);
-        if (btnVal === spend) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-    };
-
-    adSpendInput.addEventListener('input', calculateROI);
-
-    presetButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const amount = parseInt(btn.getAttribute('data-amount'), 10);
-        if (!isNaN(amount)) {
-          adSpendInput.value = amount;
-          calculateROI();
-        }
-      });
-    });
-
-    calculateROI();
-  }
-
-  // 6. Testimonials Carousel Controller (Matching Screenshots 3, 4, 5)
+  // 5. Testimonials Carousel Controller (Matching Screenshots 3, 4, 5)
   const testiSlides = document.querySelectorAll('.testimonial-slide');
   const prevTestiBtn = document.getElementById('prev-testi-btn');
   const nextTestiBtn = document.getElementById('next-testi-btn');
